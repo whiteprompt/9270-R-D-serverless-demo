@@ -1,0 +1,73 @@
+service: 9270-rd-serverless-demo
+
+provider:
+  name: aws
+  region: sa-east-1
+  stage: dev
+  memorySize: 256
+  runtime: nodejs8.10
+  role: LambdaRole
+  environment:
+    #aurora
+    AURORA_HOST: ${self:custom.AURORA.HOST}
+    AURORA_PORT: ${self:custom.AURORA.PORT}
+    #common
+    DB_NAME: ${self:custom.DB_NAME}
+    USERNAME: ${self:custom.USERNAME}
+    PASSWORD: ${self:custom.PASSWORD}
+
+custom:
+  DB_NAME: graphql
+  USERNAME: master
+  PASSWORD: password
+  AURORA:
+    HOST:
+      Fn::GetAtt: [AuroraRDSCluster, Endpoint.Address]
+    PORT:
+      Fn::GetAtt: [AuroraRDSCluster, Endpoint.Port]
+    VPC_CIDR: 10
+  VPC:
+    SECURITY_GROUP: !Ref 'ServerlessSecurityGroup'
+    SUBNET_A: !Ref 'ServerlessSubnetA'
+    SUBNET_B: !Ref 'ServerlessSubnetB'
+    SUBNET_C: !Ref 'ServerlessSubnetC'
+
+plugins:
+  - serverless-pseudo-parameters
+
+functions:
+  graphql:
+    handler: handler.server
+    events:
+      - http:
+          path: /
+          method: post
+          cors: true
+  playground:
+    handler: handler.playground
+    events:
+      - http:
+          path: /
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    LambdaRole: ${file(./resource/LambdaRole.yml)}
+    ServerlessInternetGateway: ${file(./resource/ServerlessInternetGateway.yml)}
+    ServerlessVPC: ${file(./resource/ServerlessVPC.yml)}
+    ServerlessVPCGA: ${file(./resource/ServerlessVPCGA.yml)}
+    ServerlessSubnetA: ${file(./resource/ServerlessSubnetA.yml)}
+    ServerlessSubnetB: ${file(./resource/ServerlessSubnetB.yml)}
+    ServerlessSubnetC: ${file(./resource/ServerlessSubnetC.yml)}
+    ServerlessSubnetGroup: ${file(./resource/ServerlessSubnetGroup.yml)}
+    ServerlessSecurityGroup: ${file(./resource/ServerlessSecurityGroup.yml)}
+    RouteTablePublic: ${file(./resource/RouteTablePublic.yml)}
+    RoutePublic: ${file(./resource/RoutePublic.yml)}
+    RouteTableAssociationSubnetA: ${file(./resource/RouteTableAssociationSubnetA.yml)}
+    RouteTableAssociationSubnetB: ${file(./resource/RouteTableAssociationSubnetB.yml)}
+    RouteTableAssociationSubnetC: ${file(./resource/RouteTableAssociationSubnetC.yml)}
+    AuroraRDSClusterParameter: ${file(./resource/AuroraRDSClusterParameter.yml)}
+    AuroraRDSInstanceParameter: ${file(./resource/AuroraRDSInstanceParameter.yml)}
+    AuroraRDSCluster: ${file(./resource/AuroraRDSCluster.yml)}
+    AuroraRDSInstance: ${file(./resource/AuroraRDSInstance.yml)}

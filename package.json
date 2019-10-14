@@ -1,0 +1,19 @@
+{
+  "name": "9270-r-d-serverless-demo",
+  "version": "1.0.0",
+  "description": "Research & Development Serverless Demo app",
+  "main": "handler.js",
+  "scripts": {
+    "func": "serverless deploy function --function graphql",
+    "deploy": "serverless deploy",
+    "remove": "serverless remove"
+  },
+  "dependencies": {
+    "graphql-yoga": "^1.17.4",
+    "serverless-mysql": "^1.4.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "serverless-pseudo-parameters": "^2.4.0"
+  }
+}

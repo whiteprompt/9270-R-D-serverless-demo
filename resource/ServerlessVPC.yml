@@ -1,0 +1,16 @@
+Type: AWS::EC2::VPC
+Properties:
+  CidrBlock: ${self:custom.AURORA.VPC_CIDR}.0.0.0/16
+  EnableDnsSupport: true
+  EnableDnsHostnames: true
+  InstanceTenancy: default
+  Tags:
+    -
+      Key: "Name"
+      Value: "ServerlessVPC"
+    -
+      Key: "CLIENT"
+      Value: "WhitePrompt"
+    -
+      Key: "PROJECT"
+      Value: "Serverless Research"
