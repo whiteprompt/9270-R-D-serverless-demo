@@ -14,20 +14,16 @@ input UserInput {
 	Posts: [PostInput]
 }
 
-input PostInput{
+input PostInput {
 	Text: String
 }
 
 type Mutation {
-	mysql_createUser(input: UserInput!): User
-	postgresql_createUser(input: UserInput!): User
-	aurora_createUser(input: UserInput!): User
+	createUser(input: UserInput!): User
 }
 
 type Query {
-	mysql_getUser(uuid: String!): User
-	postgresql_getUser(uuid: String!): User
-	aurora_getUser(uuid: String!): User
+	getUser(uuid: String!): User
 }
 
 schema {

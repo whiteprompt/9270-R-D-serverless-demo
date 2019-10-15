@@ -1,23 +1,28 @@
-service: 9270-rd-serverless-demo
+service: rd-serverless-demo
 
 provider:
   name: aws
-  region: sa-east-1
+  region: us-west-2
   stage: dev
   memorySize: 256
   runtime: nodejs8.10
   role: LambdaRole
   environment:
-    #aurora
     AURORA_HOST: ${self:custom.AURORA.HOST}
     AURORA_PORT: ${self:custom.AURORA.PORT}
-    #common
     DB_NAME: ${self:custom.DB_NAME}
     USERNAME: ${self:custom.USERNAME}
     PASSWORD: ${self:custom.PASSWORD}
+  vpc:
+    securityGroupIds:
+      - ${self:custom.VPC.SECURITY_GROUP}
+    subnetIds:
+      - ${self:custom.VPC.SUBNET_A}
+      - ${self:custom.VPC.SUBNET_B}
+      - ${self:custom.VPC.SUBNET_C}
 
 custom:
-  DB_NAME: graphql
+  DB_NAME: graphql_dev
   USERNAME: master
   PASSWORD: password
   AURORA:
@@ -34,6 +39,9 @@ custom:
 
 plugins:
   - serverless-pseudo-parameters
+  - serverless-dotenv-plugin
+  - serverless-offline
+  - serverless-offline-dotenv
 
 functions:
   graphql:
@@ -70,4 +78,3 @@ resources:
     AuroraRDSClusterParameter: ${file(./resource/AuroraRDSClusterParameter.yml)}
     AuroraRDSInstanceParameter: ${file(./resource/AuroraRDSInstanceParameter.yml)}
     AuroraRDSCluster: ${file(./resource/AuroraRDSCluster.yml)}
-    AuroraRDSInstance: ${file(./resource/AuroraRDSInstance.yml)}

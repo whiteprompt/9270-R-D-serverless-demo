@@ -1,45 +1,84 @@
-<!--
-title: 'A Simple Serverless GraphQL API for MySQL, Postgres and Aurora'
-description: 'This is an example project that uses 3 RDS databases to illustrate the differences between using each of them'
-layout: Doc
-framework: v1
-platform: AWS
-language: nodeJS
-authorLink: ’https://github.com/chief-wizard'
-authorName: ‘Chief Wizard’
-authorAvatar: ‘https://avatars3.githubusercontent.com/u/40777040?v=4&s=140
--->
+# Serverless Demo
 
-# A Simple Serverless GraphQL API for MySQL, Postgres and Aurora
+This is a demo GraphQL API using the 
+[Serverless framework](https://serverless.com/framework/), Node.js and 
+[Amazon RDS](https://aws.amazon.com/rds/).
 
-This is an example project using the [Serverless framework](https://serverless.com/framework/), Node.js and [Amazon RDS](https://aws.amazon.com/rds/).
+This project uses Aurora MySQL Serverless
 
-This project uses 3 RDS databases to illustrate the differences between using each of them:
+## Getting Started
 
-* MySQL
-* PostgreSQL
-* MySQL-compatible Amazon Aurora
+This is a GraphQL API with the following schema.
 
-## How to Deploy This Project
+```
+type Mutation {
+  createUser(input: UserInput!): User
+}
 
-### Pre-Requisites
+type Post {
+  UUID: String
+  Text: String
+}
 
-To deploy this GraphQL API, you’ll need the following:
+input PostInput {
+  Text: String
+}
 
-* An AWS account.
+type Query {
+  getUser(uuid: String!): User
+}
+
+type User {
+  UUID: String
+  Name: String
+  Posts: [Post]
+}
+
+input UserInput {
+  Name: String
+  Posts: [PostInput]
+}
+```
+
+It has one Query and one Mutation
+
+```
+createUser(
+  input: UserInput!
+): User
+
+getUser(
+  uuid: String!
+): User
+```
+
+### Prerequisites
+
+* An AWS account
 * [AWS CLI](https://aws.amazon.com/cli/) installed locally.
 * API credentials for your AWS account configured in your AWS CLI locally by running `aws configure`.
 * Serverless framework installed locally via `npm -g install serverless`.
 
+### Install
+
+* Install NPM Dependencies by running `npm install`
+* Copy `.env.example` to `.env.development` and set the required environmental variables
+  * `AURORA_HOST` set to your local mysql host 
+  * `DB_NAME`
+  * `USERNAME`
+  * `PASSWORD` 
+
+### Running locally
+
+Execute `npm run offline`. 
+Head over http://localhost:3000 to access the GraphQL playground.
+
 ### Steps to Deploy
 
-Once all pre-requisite items are ready, follow these steps to deploy this example GraphQL API:
-
-1. Run `npm install` to install all the necessary dependencies.
-2. Run `npm run deploy` to deploy the stack.
+* Create your `.env.production` file.
+* Run `NODE_ENV=production serverless deploy`
 
 ### Steps to Remove All Resources
 
-After you’ve finished working with this example, remove all resources to make sure you’re not getting billed for unused RDS databases.
-
-Run `npm run remove` to remove all resources.
+* Create your `.env.production` file.
+* Run `NODE_ENV=production serverless remove`

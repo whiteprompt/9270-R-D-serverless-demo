@@ -5,10 +5,10 @@ const typeDefs = fs.readFileSync("./schema.gql").toString('utf-8');
 
 const resolvers = {
     Query: {
-        aurora_getUser: require("./resolver/Query/aurora_getUser").func
+        getUser: require("./resolver/Query/getUser").func
     },
     Mutation: {
-        aurora_createUser: require("./resolver/Mutation/aurora_createUser").func
+        createUser: require("./resolver/Mutation/createUser").func
     }
 };
 
