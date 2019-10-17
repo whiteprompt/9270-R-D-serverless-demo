@@ -13,7 +13,7 @@ It spins up automatically:
 * A VPC, with all the security and networking configuration necessary to allow 
 the lambdas to connect to the database
   * Permissions for the Lambdas
-  * Internet Gateway attachyed to the VPC
+  * Internet Gateway attached to the VPC
   * Subnets
   * Security Group
   * Route Tables
