@@ -5,6 +5,8 @@ This repository contains the implementation of a demo GraphQL API using the
 [graphql-yoga](https://github.com/prisma-labs/graphql-yoga) and
 [Amazon RDS (Aurora MySQL Serverless)](https://aws.amazon.com/rds/aurora/serverless/).
 
+It's based in the [official serverless framework examples](https://github.com/serverless/examples). 
+
 It spins up automatically:
 * Lambda handlers for the GraphQL and its playground
 * The API Gateway endpoints to access the above
